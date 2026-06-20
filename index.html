@@ -1,115 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Kartik Clarity™</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kartik Clarity™ — Founder Revenue OS</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body {
-  background:#0A0A0F;
-  color:white;
-  font-family: Arial;
-}
+body { background:#0A0A0F; color:white; font-family:Arial; }
+.card { background:#111; border:1px solid #222; padding:16px; border-radius:14px; }
+.btn { padding:10px 14px; border-radius:10px; }
 </style>
 </head>
 
-<body class="p-8 max-w-xl mx-auto">
+<body class="max-w-6xl mx-auto p-6">
 
-<h1 class="text-3xl font-bold">Kartik Clarity™</h1>
-<p class="text-gray-400 mt-2">AI Revenue Intelligence OS for founders</p>
+<!-- HEADER -->
+<div class="flex justify-between items-center mb-8">
+  <div class="text-lg font-bold">Kartik Clarity™</div>
 
-<div class="mt-8 bg-zinc-900 p-6 rounded-xl border border-white/10">
-
-  <input id="email"
-    placeholder="Enter email"
-    class="w-full p-3 bg-black border border-gray-700 rounded"
-  />
-
-  <button onclick="runScan()"
-    class="mt-4 w-full bg-purple-600 hover:bg-purple-700 py-2 rounded">
-    Run AI Revenue Scan
-  </button>
-
-  <pre id="out" class="mt-4 text-green-400 text-sm whitespace-pre-wrap"></pre>
-
+  <div class="flex gap-4 text-sm">
+    <button onclick="go('home')">Home</button>
+    <button onclick="go('pricing')">Pricing</button>
+    <button onclick="go('dashboard')">Dashboard</button>
+    <button onclick="go('login')" class="bg-purple-600 px-3 py-1 rounded">Login</button>
+  </div>
 </div>
+
+<!-- APP -->
+<div id="app"></div>
 
 <script>
 
 /* =========================
-   SUPABASE CONFIG (ONLY THIS EDIT)
+   CONFIG (YOUR KEYS)
 ========================= */
 
 const SUPABASE_URL = "https://bigovtsoqrcbmuqpetaj.supabase.co";
 const SUPABASE_ANON_KEY = "PASTE_YOUR_ANON_KEY_HERE";
+const STRIPE_URL = "https://buy.stripe.com/test_your_link_here";
 
 /* =========================
-   AI ENGINE (mock logic)
+   STATE
 ========================= */
 
-function generateAI() {
+let userEmail = "";
+let page = "home";
+
+/* =========================
+   ROUTER
+========================= */
+
+function go(p){
+  page = p;
+  render();
+}
+
+/* =========================
+   AI ENGINE (SIMULATED)
+========================= */
+
+function aiScan(){
   return {
     leak: "Slow lead response system",
-    impact: "$8K–$25K monthly loss",
-    fix: "Automate CRM follow-ups within 5 minutes"
+    impact: "$10K–$30K monthly loss",
+    fix: "Automate CRM + instant follow-ups within 5 minutes"
   };
 }
 
 /* =========================
-   MAIN FUNCTION
+   SUPABASE SAVE
 ========================= */
 
-async function runScan() {
-
-  const email = document.getElementById("email").value;
-  const out = document.getElementById("out");
-
-  if (!email) {
-    out.innerText = "Enter email first";
-    return;
-  }
-
-  out.innerText = "Running AI scan...";
-
-  const ai = generateAI();
+async function saveScan(email, data){
 
   try {
-
-    const res = await fetch(SUPABASE_URL + "/rest/v1/scans", {
+    await fetch(SUPABASE_URL + "/rest/v1/scans", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "apikey": SUPABASE_ANON_KEY,
-        "Authorization": "Bearer " + SUPABASE_ANON_KEY,
-        "Prefer": "return=representation"
+        "Authorization": "Bearer " + SUPABASE_ANON_KEY
       },
       body: JSON.stringify({
         email,
-        leak: ai.leak,
-        impact: ai.impact,
-        fix: ai.fix
+        leak: data.leak,
+        impact: data.impact,
+        fix: data.fix
       })
     });
-
-    const text = await res.text();
-
-    if (!res.ok) {
-      out.innerText = "ERROR:\n\n" + text;
-      return;
-    }
-
-    out.innerText =
-      "SCAN COMPLETE\n\n" +
-      ai.leak + "\n" +
-      ai.impact + "\n" +
-      ai.fix;
-
-  } catch (err) {
-    out.innerText = "NETWORK ERROR: " + err.message;
+  } catch(e){
+    console.log("DB error", e);
   }
+}
+
+/* =========================
+   RENDER
+========================= */
+
+function render(){
+
+const app = document.getElementById("app");
+
+/* ---------- HOME ---------- */
+if(page === "home"){
+app.innerHTML = `
+<div class="card">
+  <h1 class="text-3xl font-bold">AI Revenue Intelligence OS</h1>
+  <p class="text-gray-400 mt-2">Detect revenue leaks. Increase ARR. Optimize founder systems.</p>
+
+  <input id="email"
+    class="w-full mt-4 p-3 text-black rounded"
+    placeholder="Enter your email"/>
+
+  <button onclick="runScan()"
+    class="mt-4 w-full bg-purple-600 py-2 rounded">
+    Run AI Revenue Scan
+  </button>
+
+  <pre id="out" class="mt-4 text-green-400 whitespace-pre-wrap"></pre>
+
+  <button onclick="window.open('${STRIPE_URL}')"
+    class="mt-6 w-full bg-green-600 py-2 rounded">
+    Upgrade to Pro ($29/mo)
+  </button>
+</div>
+`;
+}
+
+/* ---------- PRICING ---------- */
+if(page === "pricing"){
+app.innerHTML = `
+<div class="card">
+  <h2 class="text-2xl font-bold">Pricing</h2>
+
+  <div class="mt-4 space-y-3">
+    <div class="card">Free — Revenue Scan</div>
+    <div class="card">Pro — $29/mo (AI insights + dashboard)</div>
+  </div>
+
+  <button onclick="window.open('${STRIPE_URL}')"
+    class="mt-6 bg-purple-600 px-4 py-2 rounded">
+    Start Pro
+  </button>
+</div>
+`;
+}
+
+/* ---------- DASHBOARD ---------- */
+if(page === "dashboard"){
+app.innerHTML = `
+<div class="card">
+  <h2 class="text-2xl font-bold">Dashboard</h2>
+
+  <p class="text-gray-400 mt-1">
+    ${userEmail || "Not logged in"}
+  </p>
+
+  <div class="mt-6 space-y-3">
+    <div class="card">
+      Revenue Leak Score: <b>$236,000 risk</b>
+    </div>
+
+    <div class="card">
+      AI Insight: Improve follow-ups → +18% conversion
+    </div>
+
+    <div class="card">
+      Pipeline Health: Medium Risk
+    </div>
+  </div>
+</div>
+`;
+}
+
+/* ---------- LOGIN ---------- */
+if(page === "login"){
+app.innerHTML = `
+<div class="card">
+  <h2 class="text-xl font-bold">Login</h2>
+
+  <input id="loginEmail"
+    class="w-full mt-4 p-3 text-black rounded"
+    placeholder="Enter email"/>
+
+  <button onclick="login()"
+    class="mt-4 w-full bg-purple-600 py-2 rounded">
+    Login
+  </button>
+</div>
+`;
+}
+
+}
+
+render();
+
+/* =========================
+   ACTIONS
+========================= */
+
+function login(){
+  const email = document.getElementById("loginEmail").value;
+  if(!email) return alert("Enter email");
+
+  userEmail = email;
+  alert("Logged in as " + email);
+
+  go("dashboard");
+}
+
+async function runScan(){
+
+const email = document.getElementById("email").value;
+const out = document.getElementById("out");
+
+if(!email){
+  alert("Enter email");
+  return;
+}
+
+userEmail = email;
+
+const result = aiScan();
+
+out.innerText =
+"Leak: " + result.leak + "\n\n" +
+"Impact: " + result.impact + "\n\n" +
+"Fix: " + result.fix;
+
+await saveScan(email, result);
+
 }
 
 </script>
