@@ -1,0 +1,63 @@
+🎨 ADD YOUR LOGO PNG FILES HERE
+================================================================
+
+DOWNLOAD YOUR LOGOS FROM:
+---------------------------------------
+Circle Logo: https://ibb.co/v67G7XyZ
+Rectangle Logo: https://ibb.co/s9q4H7Ry
+
+
+SAVE THEM AS:
+---------------------------------------
+✅ logo-circle.png (in this public/ folder)
+✅ logo-rectangle.png (in this public/ folder)
+
+
+EXACT FILE NAMES REQUIRED:
+---------------------------------------
+✅ logo-circle.png
+✅ logo-rectangle.png
+
+
+WHERE THEY APPEAR
+-----------------
+Circle Logo:
+• Header (top-left corner)
+• Footer 
+• Browser tab icon (favicon)
+• Mobile navigation
+
+Rectangle Logo:
+• Login page
+• Signup page
+• Onboarding flow
+
+
+FILE REQUIREMENTS
+-----------------
+Circle Logo:
+- Size: 200x200px minimum
+- Format: PNG (transparent) or SVG
+- File name: logo-circle.png or logo-circle.svg
+
+Rectangle Logo:
+- Size: 800x200px minimum  
+- Format: PNG (transparent) or SVG
+- File name: logo-rectangle.png or logo-rectangle.svg
+
+
+QUICK TEST
+----------
+After adding your logos:
+1. Run: npm run dev
+2. Open: http://localhost:5173
+3. Check header, footer, login page
+
+
+NEED HELP?
+----------
+Read: LOGO_SETUP.md (detailed instructions)
+Email: kartik.clarity@gmail.com
+
+The current placeholder logos will show "KC" until you replace them
+with your actual brand logos. The site works perfectly with placeholders!
