@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kartik Clarity™</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body {
+  background:#0A0A0F;
+  color:white;
+  font-family: Arial;
+}
+</style>
+</head>
+
+<body class="p-8 max-w-xl mx-auto">
+
+<h1 class="text-3xl font-bold">Kartik Clarity™</h1>
+<p class="text-gray-400 mt-2">AI Revenue Intelligence OS for founders</p>
+
+<div class="mt-8 bg-zinc-900 p-6 rounded-xl border border-white/10">
+
+  <input id="email"
+    placeholder="Enter email"
+    class="w-full p-3 bg-black border border-gray-700 rounded"
+  />
+
+  <button onclick="runScan()"
+    class="mt-4 w-full bg-purple-600 hover:bg-purple-700 py-2 rounded">
+    Run AI Revenue Scan
+  </button>
+
+  <pre id="out" class="mt-4 text-green-400 text-sm whitespace-pre-wrap"></pre>
+
+</div>
+
+<script>
+
+/* =========================
+   SUPABASE CONFIG (ONLY THIS EDIT)
+========================= */
+
+const SUPABASE_URL = "https://bigovtsoqrcbmuqpetaj.supabase.co";
+const SUPABASE_ANON_KEY = "PASTE_YOUR_ANON_KEY_HERE";
+
+/* =========================
+   AI ENGINE (mock logic)
+========================= */
+
+function generateAI() {
+  return {
+    leak: "Slow lead response system",
+    impact: "$8K–$25K monthly loss",
+    fix: "Automate CRM follow-ups within 5 minutes"
+  };
+}
+
+/* =========================
+   MAIN FUNCTION
+========================= */
+
+async function runScan() {
+
+  const email = document.getElementById("email").value;
+  const out = document.getElementById("out");
+
+  if (!email) {
+    out.innerText = "Enter email first";
+    return;
+  }
+
+  out.innerText = "Running AI scan...";
+
+  const ai = generateAI();
+
+  try {
+
+    const res = await fetch(SUPABASE_URL + "/rest/v1/scans", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+        "Prefer": "return=representation"
+      },
+      body: JSON.stringify({
+        email,
+        leak: ai.leak,
+        impact: ai.impact,
+        fix: ai.fix
+      })
+    });
+
+    const text = await res.text();
+
+    if (!res.ok) {
+      out.innerText = "ERROR:\n\n" + text;
+      return;
+    }
+
+    out.innerText =
+      "SCAN COMPLETE\n\n" +
+      ai.leak + "\n" +
+      ai.impact + "\n" +
+      ai.fix;
+
+  } catch (err) {
+    out.innerText = "NETWORK ERROR: " + err.message;
+  }
+}
+
+</script>
+
+</body>
+</html>
